@@ -1,5 +1,9 @@
 # To Do check
 
+## Stack utilizada
+
+**Mobile:** JestJs, NativeBase, React Native
+
 ## Definição dos requisitos
 
 - Afazeres dentro de categorias
@@ -16,3 +20,7 @@
 - Definir tags para dever
 - Descrição para dever
 - Estatísticas de afazeres
+
+## Referência
+
+- [Padrão de commit](https://dev.to/ishanmakadia/git-commit-message-convention-that-you-can-follow-1709)
