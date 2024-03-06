@@ -17,7 +17,7 @@ export default function Title(props: ITitleProps) {
   return (
     <Box py={"1"}>
       <HStack space={"2"}>
-        {Icon && <Icon color={props.textColor ?? "#8A3FFC"} />}
+        {Icon && <Icon color={props.textColor ?? "#8A3FFC"} size={20} />}
         <Text
           fontSize={size === "small" ? "sm" : "md"}
           fontWeight={"semibold"}
