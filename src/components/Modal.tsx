@@ -14,12 +14,13 @@ export default function Modal(props: IModalProps) {
   return (
     <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
       <ModalBase.Content
-        maxWidth="400px"
+        w="full"
+        mx={"4"}
         borderColor={props.isDanger ? "#E41C1C" : "#8A3FFC"}
         borderStyle={"solid"}
         borderWidth={1}
       >
-        <HStack w={"full"}>
+        <HStack w={"full"} py={"3"} position={"relative"}>
           <Text
             fontWeight={"normal"}
             fontSize={"xl"}
@@ -32,6 +33,9 @@ export default function Modal(props: IModalProps) {
           </Text>
 
           <IconButton
+            position={"absolute"}
+            right={"0"}
+            top={"0"}
             icon={<X size={32} color="#8A3FFC" />}
             onPress={props.onClose}
           />
