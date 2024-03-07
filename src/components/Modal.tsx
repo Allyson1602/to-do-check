@@ -11,8 +11,6 @@ export interface IModalProps {
 }
 
 export default function Modal(props: IModalProps) {
-  //   const [isOpen, setIsOpen] = useState(props.isOpen);
-
   return (
     <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
       <ModalBase.Content
