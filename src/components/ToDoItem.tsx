@@ -81,12 +81,13 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
         <Box px={"3"} pb={"5"} display={isOpenAccordion ? "block" : "none"}>
           <TextArea
-            p={"1"}
+            p={"2"}
             minHeight={90}
             placeholder="Digite aqui"
             bg={"#F7F2FF"}
             isReadOnly
             value={todoItem.description}
+            autoCompleteType={undefined} // bug
           />
 
           <HStack justifyContent={"space-between"} pt={"3"}>
