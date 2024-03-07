@@ -6,6 +6,8 @@ const newTheme = {
       variants: {
         solid: {
           bg: "#8A3FFC",
+          paddingBottom: 1,
+          paddingTop: 1,
           borderRadius: 5,
           _text: {
             fontWeight: "500",
@@ -13,6 +15,8 @@ const newTheme = {
         },
         outline: {
           borderColor: "#8A3FFC",
+          paddingBottom: 1,
+          paddingTop: 1,
           _text: {
             color: "#8A3FFC",
             fontWeight: "500",
