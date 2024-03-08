@@ -7,27 +7,13 @@ import House from "phosphor-react-native/src/icons/House";
 import WarningCircle from "phosphor-react-native/src/icons/WarningCircle";
 import Title from "./Title";
 import MenuItem from "./MenuItem";
-import { ICategoryModel } from "../models/category";
 import getIconByName from "../utils/get-icon-by-name";
-import { EIcon } from "../enums/icon";
 import { EScreenName } from "../enums/navigation";
+import { useAppSelector } from "../hooks";
 
 export default function Menu() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [categories, setCategories] = useState<ICategoryModel[]>([
-    {
-      id: 1,
-      iconName: EIcon.building,
-      isFavorite: true,
-      title: "Tarefas de casa",
-    },
-    {
-      id: 2,
-      iconName: EIcon.hamburguer,
-      isFavorite: false,
-      title: "Tarefas do trabalho",
-    },
-  ]);
+  const categories = useAppSelector((state) => state.category);
 
   const callBackClickMenuItem = () => {
     setIsOpenMenu(false);
@@ -137,7 +123,7 @@ export default function Menu() {
                   <MenuItem
                     key={categoryItem.id}
                     id={categoryItem.id.toString()}
-                    Icon={getIconByName(categoryItem.iconName)!}
+                    Icon={getIconByName(categoryItem.iconName)}
                     goTo={EScreenName.TODO}
                     isFavorite={categoryItem.isFavorite}
                     callBack={callBackClickMenuItem}

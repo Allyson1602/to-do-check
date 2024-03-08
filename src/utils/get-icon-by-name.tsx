@@ -15,7 +15,7 @@ export interface ITitleProps {
   children: React.ReactNode;
 }
 
-export default function getIconByName(name: EIcon): TIcon | undefined {
+export default function getIconByName(name: EIcon): TIcon {
   switch (name) {
     case EIcon.building:
       return Building;
@@ -31,7 +31,5 @@ export default function getIconByName(name: EIcon): TIcon | undefined {
       return PawPrint;
     case EIcon.shoppingCart:
       return ShoppingCart;
-    default:
-      return undefined;
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Box, HStack, Divider } from "native-base";
+import { Text } from "native-base";
 
 export interface IHeaderTitleProps {
   text: string;

@@ -27,7 +27,10 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
   return (
     <Pressable onLongPress={handleLongPress}>
-      <Box bg={"#8A3FFC40"}>
+      <Box
+        bg={todoItem.isImportant ? "#8A3FFC80" : "#8A3FFC40"}
+        borderRadius={"xl"}
+      >
         <HStack justifyContent={"space-between"} alignItems={"center"} py={"1"}>
           <Pressable>
             <DotsSixVertical weight="bold" color="#3B1F65" size={25} />
