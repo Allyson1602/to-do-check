@@ -4,119 +4,227 @@ import {
   Checkbox,
   HStack,
   IconButton,
+  Input,
   PresenceTransition,
   Text,
   TextArea,
+  VStack,
 } from "native-base";
-import React from "react";
+import React, { useState } from "react";
 import DotsSixVertical from "phosphor-react-native/src/icons/DotsSixVertical";
 import CaretDown from "phosphor-react-native/src/icons/CaretDown";
 import Check from "phosphor-react-native/src/icons/Check";
-import { GestureResponderEvent, Pressable } from "react-native";
+import {
+  GestureResponderEvent,
+  NativeSyntheticEvent,
+  Pressable,
+  TextInputChangeEventData,
+} from "react-native";
 import { ITodoItemModel } from "../models/todo-item";
+import Modal from "./Modal";
 
 export interface IToDoItemProps {
   todoItem: ITodoItemModel;
 }
 
 export default function ToDoItem({ todoItem }: IToDoItemProps) {
-  const [isOpenAccordion, setIsOpenAccordion] = React.useState(false);
-  const [isDone, setIsDone] = React.useState(todoItem.isDone || false);
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false);
+  const [isDone, setIsDone] = useState(todoItem.isDone || false);
 
-  const handleLongPress = (event: GestureResponderEvent) => {};
+  const [toDoNameValue, setToDoNameValue] = useState(todoItem.title);
+  const [toDoDescriptionValue, setToDoDescriptionValue] = useState(
+    todoItem.description
+  );
+
+  const [updateTodoOpen, setUpdateToDoOpen] = useState(false);
+  const [deleteTodoOpen, setDeleteToDoOpen] = useState(false);
+
+  const handleLongPress = (event: GestureResponderEvent) => {
+    // - teste long press no redux e no bd
+  };
+
+  const handleDeleteToDo = () => {
+    // - teste criar no redux e no bd
+  };
+
+  const handleUpdateToDo = () => {
+    // - teste criar no redux e no bd
+  };
+
+  const handleToDoName = (
+    event: NativeSyntheticEvent<TextInputChangeEventData>
+  ) => {
+    setToDoNameValue(event.nativeEvent.text);
+  };
+
+  const handleToDoDescription = (
+    event: NativeSyntheticEvent<TextInputChangeEventData>
+  ) => {
+    setToDoDescriptionValue(event.nativeEvent.text);
+  };
 
   return (
-    <Pressable onLongPress={handleLongPress}>
-      <Box
-        bg={todoItem.isImportant ? "#8A3FFC80" : "#8A3FFC40"}
-        borderRadius={"xl"}
-      >
-        <HStack justifyContent={"space-between"} alignItems={"center"} py={"1"}>
-          <Pressable>
-            <DotsSixVertical weight="bold" color="#3B1F65" size={25} />
-          </Pressable>
+    <>
+      <Pressable onLongPress={handleLongPress}>
+        <Box
+          bg={todoItem.isImportant ? "#8A3FFC80" : "#8A3FFC40"}
+          borderRadius={"xl"}
+        >
+          <HStack
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            py={"1"}
+          >
+            <Pressable>
+              <DotsSixVertical weight="bold" color="#3B1F65" size={25} />
+            </Pressable>
 
-          <HStack flexGrow={1} pl={"1"}>
-            <Checkbox
-              isChecked={isDone}
-              value="isDone"
-              borderColor={"#8A3FFC"}
-              bg="transparent"
-              _checked={{ bg: "#8A3FFC" }}
-              _icon={{
-                as: Check,
-                color: "#3B1F65",
-              }}
-              onChange={() => {
-                setIsDone(!isDone);
-              }}
-            >
-              <Text
-                color="#3B1F65"
-                textDecorationLine={isDone ? "line-through" : "none"}
-              >
-                {todoItem.title}
-              </Text>
-            </Checkbox>
-          </HStack>
-
-          <IconButton
-            onPress={() => setIsOpenAccordion(!isOpenAccordion)}
-            p={"2"}
-            icon={
-              <PresenceTransition
-                visible={isOpenAccordion}
-                initial={{
-                  rotate: "0deg",
+            <HStack flexGrow={1} pl={"1"}>
+              <Checkbox
+                isChecked={isDone}
+                value="isDone"
+                borderColor={"#8A3FFC"}
+                bg="transparent"
+                _checked={{ bg: "#8A3FFC" }}
+                _icon={{
+                  as: Check,
+                  color: "#3B1F65",
                 }}
-                animate={{
-                  rotate: "90deg",
-                  transition: {
-                    duration: 150,
-                  },
+                onChange={() => {
+                  setIsDone(!isDone);
                 }}
               >
-                <CaretDown weight="bold" size={30} color="#3B1F65" />
-              </PresenceTransition>
-            }
-          />
-        </HStack>
+                <Text
+                  color="#3B1F65"
+                  textDecorationLine={isDone ? "line-through" : "none"}
+                >
+                  {todoItem.title}
+                </Text>
+              </Checkbox>
+            </HStack>
 
-        <Box px={"3"} pb={"5"} display={isOpenAccordion ? "block" : "none"}>
-          <TextArea
-            p={"2"}
-            minHeight={90}
-            placeholder="Digite aqui"
-            bg={"#F7F2FF"}
-            isReadOnly
-            value={todoItem.description}
-            autoCompleteType={undefined} // bug
-          />
-
-          <HStack justifyContent={"space-between"} pt={"3"}>
-            <Button
-              borderColor={"#E41C1C"}
-              variant={"outline"}
-              _text={{
-                fontWeight: "normal",
-                color: "#E41C1C",
-              }}
-            >
-              apagar
-            </Button>
-
-            <Button
-              variant={"outline"}
-              px={"4"}
-              _text={{
-                fontWeight: "normal",
-              }}
-            >
-              editar
-            </Button>
+            <IconButton
+              onPress={() => setIsOpenAccordion(!isOpenAccordion)}
+              p={"2"}
+              icon={
+                <PresenceTransition
+                  visible={isOpenAccordion}
+                  initial={{
+                    rotate: "0deg",
+                  }}
+                  animate={{
+                    rotate: "90deg",
+                    transition: {
+                      duration: 150,
+                    },
+                  }}
+                >
+                  <CaretDown weight="bold" size={30} color="#3B1F65" />
+                </PresenceTransition>
+              }
+            />
           </HStack>
+
+          <Box px={"3"} pb={"5"} display={isOpenAccordion ? "block" : "none"}>
+            <TextArea
+              p={"2"}
+              minHeight={90}
+              placeholder="Digite aqui"
+              bg={"#F7F2FF"}
+              isReadOnly
+              value={todoItem.description}
+              autoCompleteType={undefined} // bug
+            />
+
+            <HStack justifyContent={"space-between"} pt={"3"}>
+              <Button
+                borderColor={"#E41C1C"}
+                variant={"outline"}
+                _text={{
+                  fontWeight: "normal",
+                  color: "#E41C1C",
+                }}
+                onPress={() => setDeleteToDoOpen(true)}
+              >
+                apagar
+              </Button>
+
+              <Button
+                variant={"outline"}
+                px={"4"}
+                _text={{
+                  fontWeight: "normal",
+                }}
+                onPress={() => setUpdateToDoOpen(true)}
+              >
+                editar
+              </Button>
+            </HStack>
+          </Box>
         </Box>
-      </Box>
-    </Pressable>
+      </Pressable>
+
+      <Modal
+        title="Editar afazer"
+        isOpen={updateTodoOpen}
+        onClose={() => setUpdateToDoOpen(false)}
+      >
+        <VStack py={"6"} space={"3"}>
+          <VStack space={"0.5"}>
+            <Text color={"#3B1F65"} pl={"0.5"}>
+              Nome do afazer:
+            </Text>
+            <Input
+              placeholder="Digite aqui"
+              value={toDoNameValue}
+              onChange={handleToDoName}
+            />
+          </VStack>
+
+          <VStack space={"0.5"}>
+            <Text color={"#3B1F65"} pl={"0.5"}>
+              Descrição:
+            </Text>
+            <TextArea
+              p={"2"}
+              minHeight={90}
+              placeholder="Digite aqui"
+              value={toDoDescriptionValue}
+              onChange={handleToDoDescription}
+              autoCompleteType={undefined} // bug
+            />
+          </VStack>
+        </VStack>
+        <Button w={170} mx={"auto"} my={"4"} onPress={handleUpdateToDo}>
+          Editar
+        </Button>
+      </Modal>
+
+      <Modal
+        title="Apagar afazer"
+        isOpen={deleteTodoOpen}
+        onClose={() => setDeleteToDoOpen(false)}
+      >
+        <Text
+          textAlign={"center"}
+          color={"#3B1F65"}
+          py={"4"}
+          w={280}
+          mx={"auto"}
+        >
+          Deseja realmente apagar este afazer?
+        </Text>
+
+        <Button
+          w={170}
+          mx={"auto"}
+          my={"4"}
+          bg={"#E41C1C"}
+          onPress={handleDeleteToDo}
+        >
+          Apagar
+        </Button>
+      </Modal>
+    </>
   );
 }

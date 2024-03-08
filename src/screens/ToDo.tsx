@@ -33,7 +33,11 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
   const category = getCategoryById(parseInt(route.key)) as CategoryState;
 
   const [newToDoOpen, setNewToDoOpen] = useState(false);
+  const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
+
   const [toDoNameValue, setToDoNameValue] = useState("");
+
+  if (!category) navigation.navigate(EScreenName.HOME);
 
   const handleToDoName = (
     event: NativeSyntheticEvent<TextInputChangeEventData>
@@ -41,11 +45,17 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     setToDoNameValue(event.nativeEvent.text);
   };
 
-  if (!category) navigation.navigate(EScreenName.HOME);
-
   const handleIsFavorite = () => {
     const favoriteStatus = !category.isFavorite;
     // - teste atualizar no redux e no bd
+  };
+
+  const handleDeleteCategory = () => {
+    // - teste deletar no redux e no bd
+  };
+
+  const handleNewToDo = () => {
+    // - teste criar no redux e no bd
   };
 
   return (
@@ -102,11 +112,38 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
             borderColor={"#E41C1C"}
             borderStyle={"solid"}
             borderWidth={1}
+            onPress={() => setDeleteCategoryOpen(true)}
           >
             <Text color={"#E41C1C"}>apagar categoria</Text>
           </Button>
         </VStack>
       </Box>
+
+      <Modal
+        title="Apagar categoria"
+        isOpen={deleteCategoryOpen}
+        onClose={() => setDeleteCategoryOpen(false)}
+      >
+        <Text
+          textAlign={"center"}
+          color={"#3B1F65"}
+          py={"4"}
+          w={280}
+          mx={"auto"}
+        >
+          Deseja realmente apagar este categoria?
+        </Text>
+
+        <Button
+          w={170}
+          mx={"auto"}
+          my={"4"}
+          bg={"#E41C1C"}
+          onPress={handleDeleteCategory}
+        >
+          Apagar
+        </Button>
+      </Modal>
 
       <Modal
         title="Novo afazer"
@@ -140,7 +177,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
           </VStack>
         </VStack>
 
-        <Button w={170} mx={"auto"} my={"4"}>
+        <Button w={170} mx={"auto"} my={"4"} onPress={handleNewToDo}>
           Criar
         </Button>
       </Modal>
