@@ -10,7 +10,7 @@ import { RootStackParamList } from "../types/navigation";
 
 export interface IMenuItemProps {
   isFavorite?: boolean;
-  id?: string;
+  id: string;
   Icon: TIcon;
   goTo: EScreenName;
   children: React.ReactNode;
@@ -19,7 +19,7 @@ export interface IMenuItemProps {
 
 export default function MenuItem({
   isFavorite = false,
-  id = "",
+  id,
   Icon,
   goTo,
   callBack,

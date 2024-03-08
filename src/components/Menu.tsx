@@ -108,6 +108,7 @@ export default function Menu() {
 
               <MenuItem
                 Icon={House}
+                id={"999"}
                 goTo={EScreenName.HOME}
                 callBack={callBackClickMenuItem}
               >
@@ -116,6 +117,7 @@ export default function Menu() {
 
               <MenuItem
                 Icon={WarningCircle}
+                id={"1000"}
                 goTo={EScreenName.IMPORTANT}
                 callBack={callBackClickMenuItem}
               >
