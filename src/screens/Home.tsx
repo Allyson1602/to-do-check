@@ -15,14 +15,14 @@ import { RootStackParamList } from "../types/navigation";
 import HeaderTitle from "../components/HeaderTitle";
 import { LinearGradient } from "expo-linear-gradient";
 import Modal from "../components/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getIconByName from "../utils/get-icon-by-name";
 import { EIcon } from "../enums/icon";
 import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { useAppDispatch } from "../hooks";
 import { getCategoryMetadata } from "../utils/get-category-metadata";
 import categoryService, { ICategoryBody } from "../services/category";
-import { setCategory } from "../redux/reducers/category";
+import { setCategory, setInitCategories } from "../redux/reducers/category";
 import { EScreenName } from "../enums/navigation";
 
 type THomeProps = {
@@ -36,6 +36,15 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
 
   const toDoMetadata = getCategoryMetadata();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    categoryService.listCategories().then((response) => {
+      if (response.status === 200) {
+        const categories = response.data;
+        dispatch(setInitCategories(categories));
+      }
+    });
+  }, []);
 
   const handleNewCategory = async () => {
     if (!iconSelected || !categoryNameValue) return;

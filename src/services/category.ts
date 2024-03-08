@@ -9,11 +9,16 @@ export interface ICategoryBody {
 }
 
 export interface ICategoryService {
+  listCategories: () => IResponse<ICategoryModel[]>;
   createCategory: (body: ICategoryBody) => IResponse<ICategoryModel>;
   updateToDo: (body: ICategoryModel) => IResponse<ICategoryModel>;
 }
 
 const categoryService: ICategoryService = {
+  listCategories: (): IResponse<ICategoryModel[]> => {
+    return api.get<ICategoryModel[]>("/category");
+  },
+
   createCategory: (body: ICategoryBody): IResponse<ICategoryModel> => {
     return api.post<ICategoryModel>("/category", body);
   },
