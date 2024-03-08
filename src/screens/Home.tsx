@@ -19,6 +19,8 @@ import { useState } from "react";
 import getIconByName from "../utils/get-icon-by-name";
 import { EIcon } from "../enums/icon";
 import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import { useAppSelector } from "../hooks";
+import { getCategoryMetadata } from "../utils/get-category-metadata";
 
 type THomeProps = {
   navigation: StackNavigationProp<RootStackParamList, "Home">;
@@ -29,11 +31,11 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
   const [iconSelected, setIconSelected] = useState<EIcon | null>(null);
   const [categoryNameValue, setCategoryNameValue] = useState("");
 
-  const [todoData, setTodoData] = useState({
-    categoryCreated: 0,
-    todoCreated: 0,
-    todoDone: 0,
-  });
+  const toDoMetadata = getCategoryMetadata();
+
+  const handleNewCategory = () => {
+    // - teste criar no redux e no bd
+  };
 
   const handlePressIconButton = (iconName: EIcon) => {
     setIconSelected(iconName);
@@ -64,7 +66,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
               lineHeight={"2xl"}
               textAlign={"center"}
             >
-              {todoData.categoryCreated}
+              {toDoMetadata.categoryCreated}
             </Text>
             <Text color={"white"} fontSize={"md"}>
               categorias criadas
@@ -82,7 +84,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
               lineHeight={"2xl"}
               textAlign={"center"}
             >
-              {todoData.todoCreated}
+              {toDoMetadata.todoCreated}
             </Text>
             <Text color={"white"} fontSize={"md"}>
               afazeres criadas
@@ -100,7 +102,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
               lineHeight={"2xl"}
               textAlign={"center"}
             >
-              {todoData.todoDone}
+              {toDoMetadata.todoDone}
             </Text>
             <Text color={"white"} fontSize={"md"}>
               afazeres realizados
@@ -258,7 +260,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
           </VStack>
         </VStack>
 
-        <Button w={170} mx={"auto"} my={"4"}>
+        <Button w={170} mx={"auto"} my={"4"} onPress={handleNewCategory}>
           Criar
         </Button>
       </Modal>
