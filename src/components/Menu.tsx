@@ -1,4 +1,10 @@
-import { Box, IconButton, PresenceTransition, Spacer } from "native-base";
+import {
+  Box,
+  IconButton,
+  PresenceTransition,
+  ScrollView,
+  Spacer,
+} from "native-base";
 import React, { useState } from "react";
 import { Image } from "react-native";
 import List from "phosphor-react-native/src/icons/List";
@@ -86,7 +92,7 @@ export default function Menu() {
             />
           </Box>
 
-          <Box p={"4"}>
+          <ScrollView p={"4"}>
             <Box>
               <Title textColor="white">Afazeres</Title>
 
@@ -133,7 +139,7 @@ export default function Menu() {
                 ))}
               </Box>
             )}
-          </Box>
+          </ScrollView>
         </Box>
       </PresenceTransition>
     </Box>

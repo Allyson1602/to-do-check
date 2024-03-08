@@ -31,7 +31,7 @@ const initialState: CategoryState[] | null = [
   {
     id: 8,
     iconName: EIcon.hamburguer,
-    isFavorite: true,
+    isFavorite: false,
     title: "Outro - teste",
     todoItems: [
       {
