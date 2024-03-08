@@ -58,6 +58,8 @@ export const categorySlice = createSlice({
   reducers: {
     setCategory: (state, action: PayloadAction<CategoryState>) => {
       state = [...state, action.payload];
+
+      return state;
     },
   },
 });

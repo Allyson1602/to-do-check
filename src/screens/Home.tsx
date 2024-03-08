@@ -19,8 +19,11 @@ import { useState } from "react";
 import getIconByName from "../utils/get-icon-by-name";
 import { EIcon } from "../enums/icon";
 import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
-import { useAppSelector } from "../hooks";
+import { useAppDispatch } from "../hooks";
 import { getCategoryMetadata } from "../utils/get-category-metadata";
+import categoryService, { ICategoryBody } from "../services/category";
+import { setCategory } from "../redux/reducers/category";
+import { EScreenName } from "../enums/navigation";
 
 type THomeProps = {
   navigation: StackNavigationProp<RootStackParamList, "Home">;
@@ -32,9 +35,30 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
   const [categoryNameValue, setCategoryNameValue] = useState("");
 
   const toDoMetadata = getCategoryMetadata();
+  const dispatch = useAppDispatch();
 
-  const handleNewCategory = () => {
-    // - teste criar no redux e no bd
+  const handleNewCategory = async () => {
+    if (!iconSelected || !categoryNameValue) return;
+
+    const categoryData: ICategoryBody = {
+      iconName: iconSelected,
+      title: categoryNameValue,
+    };
+
+    const response = await categoryService.createCategory(categoryData);
+
+    if (response.status === 201) {
+      const categoryCreated = response.data;
+
+      dispatch(setCategory(categoryCreated));
+
+      setNewCategoryOpen(false);
+      navigation.navigate({
+        name: EScreenName.TODO,
+        key: categoryCreated.id.toString(),
+      });
+      return;
+    }
   };
 
   const handlePressIconButton = (iconName: EIcon) => {
