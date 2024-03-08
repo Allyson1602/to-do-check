@@ -19,10 +19,14 @@ import { RouteProp } from "@react-navigation/native";
 import { getCategoryById } from "../utils/get-category-by-id";
 import Title from "../components/Title";
 import { EScreenName } from "../enums/navigation";
-import { CategoryState } from "../redux/reducers/category";
+import { CategoryState, updateCategory } from "../redux/reducers/category";
 import ToDoItem from "../components/ToDoItem";
 import Modal from "../components/Modal";
 import { useState } from "react";
+import { ITodoItemModel } from "../models/todo-item";
+import categoryService from "../services/category";
+import { ICategoryModel } from "../models/category";
+import { useAppDispatch } from "../hooks";
 
 type TToDoProps = {
   navigation: StackNavigationProp<RootStackParamList, "ToDo">;
@@ -31,6 +35,7 @@ type TToDoProps = {
 
 const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
   const category = getCategoryById(parseInt(route.key)) as CategoryState;
+  const dispatch = useAppDispatch();
 
   const [newToDoOpen, setNewToDoOpen] = useState(false);
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
@@ -45,9 +50,20 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     setToDoNameValue(event.nativeEvent.text);
   };
 
-  const handleIsFavorite = () => {
-    const favoriteStatus = !category.isFavorite;
-    // - teste atualizar no redux e no bd
+  const handleIsFavorite = async () => {
+    const categoryData: ICategoryModel = {
+      ...category,
+      isFavorite: !category.isFavorite,
+    };
+
+    const response = await categoryService.updateToDo(categoryData);
+
+    if (response.status === 200) {
+      const categoryUpdated = response.data;
+
+      dispatch(updateCategory(categoryUpdated));
+      return;
+    }
   };
 
   const handleDeleteCategory = () => {

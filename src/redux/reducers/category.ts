@@ -61,10 +61,21 @@ export const categorySlice = createSlice({
 
       return state;
     },
+    updateCategory: (state, action: PayloadAction<CategoryState>) => {
+      state = state.map((stateItem) => {
+        if (stateItem.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return stateItem;
+      });
+
+      return state;
+    },
   },
 });
 
-export const { setCategory } = categorySlice.actions;
+export const { setCategory, updateCategory } = categorySlice.actions;
 
 export const selectCount = (state: RootState) => state.category;
 
