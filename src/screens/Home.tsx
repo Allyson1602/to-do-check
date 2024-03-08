@@ -68,7 +68,11 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
   const handleCategoryName = (
     event: NativeSyntheticEvent<TextInputChangeEventData>
   ) => {
-    setCategoryNameValue(event.nativeEvent.text);
+    const value = event.nativeEvent.text;
+
+    if (value.length > 35) return;
+
+    setCategoryNameValue(value);
   };
 
   return (
