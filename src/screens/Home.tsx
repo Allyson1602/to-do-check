@@ -52,7 +52,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
           <HeaderTitle text="Início" />
         </Center>
 
-        <Box bg={"#8A3FFC"} mt={"4"} py={"2"} px={"3"} borderRadius={12}>
+        <Box bg={"#8A3FFC"} mt={"16"} py={"2"} px={"3"} borderRadius={12}>
           <HStack alignItems="center" justifyContent={"space-between"}>
             <Text
               color={"white"}

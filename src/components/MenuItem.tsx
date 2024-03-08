@@ -1,33 +1,51 @@
 import React from "react";
-import { Link, HStack, Text } from "native-base";
+import { HStack, Text, Box } from "native-base";
 import { TIcon } from "../types/icon";
 import Heart from "phosphor-react-native/src/icons/Heart";
+import { EScreenName } from "../enums/navigation";
+import { Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
 export interface IMenuItemProps {
-  link: string;
   isFavorite?: boolean;
+  id?: string;
   Icon: TIcon;
+  goTo: EScreenName;
   children: React.ReactNode;
+  callBack?: () => void;
 }
 
 export default function MenuItem({
   isFavorite = false,
-  link,
+  id = "",
   Icon,
+  goTo,
+  callBack,
   children,
 }: IMenuItemProps) {
-  return (
-    <Link href={link} py={"1"}>
-      <HStack w={"full"} justifyContent={"space-between"}>
-        <HStack space={"2"}>
-          <Icon color="#FFF" size={26} />
-          <Text color="#FFF" fontSize={"md"}>
-            {children}
-          </Text>
-        </HStack>
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-        {isFavorite && <Heart weight="duotone" color="#FFF" />}
-      </HStack>
-    </Link>
+  const handleClickItem = () => {
+    navigation.navigate({ name: goTo, key: id });
+    callBack?.();
+  };
+
+  return (
+    <Box px={"1"} py={"1"} mb={"1"}>
+      <Pressable onPress={handleClickItem}>
+        <HStack w={"full"} justifyContent={"space-between"}>
+          <HStack space={"2"}>
+            <Icon color="#FFF" size={26} />
+            <Text color="#FFF" fontSize={"md"} alignSelf={"flex-end"}>
+              {children}
+            </Text>
+          </HStack>
+
+          {isFavorite && <Heart weight="duotone" color="#FFF" />}
+        </HStack>
+      </Pressable>
+    </Box>
   );
 }
