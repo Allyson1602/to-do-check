@@ -19,11 +19,14 @@ import { RouteProp } from "@react-navigation/native";
 import { getCategoryById } from "../utils/get-category-by-id";
 import Title from "../components/Title";
 import { EScreenName } from "../enums/navigation";
-import { CategoryState, updateCategory } from "../redux/reducers/category";
+import {
+  CategoryState,
+  deleteCategory,
+  updateCategory,
+} from "../redux/reducers/category";
 import ToDoItem from "../components/ToDoItem";
 import Modal from "../components/Modal";
 import { useState } from "react";
-import { ITodoItemModel } from "../models/todo-item";
 import categoryService from "../services/category";
 import { ICategoryModel } from "../models/category";
 import { useAppDispatch } from "../hooks";
@@ -42,7 +45,10 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
 
   const [toDoNameValue, setToDoNameValue] = useState("");
 
-  if (!category) navigation.navigate(EScreenName.HOME);
+  if (category === undefined) {
+    navigation.navigate(EScreenName.HOME);
+    return <></>;
+  }
 
   const handleToDoName = (
     event: NativeSyntheticEvent<TextInputChangeEventData>
@@ -56,7 +62,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
       isFavorite: !category.isFavorite,
     };
 
-    const response = await categoryService.updateToDo(categoryData);
+    const response = await categoryService.updateCategory(categoryData);
 
     if (response.status === 200) {
       const categoryUpdated = response.data;
@@ -66,8 +72,14 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     }
   };
 
-  const handleDeleteCategory = () => {
-    // - teste deletar no redux e no bd
+  const handleDeleteCategory = async () => {
+    const response = await categoryService.deleteCategory(category.id);
+    const categoryId = response.data;
+
+    if (response.status === 200 && categoryId) {
+      dispatch(deleteCategory(categoryId));
+      return;
+    }
   };
 
   const handleNewToDo = () => {

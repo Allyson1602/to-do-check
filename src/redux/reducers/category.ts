@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { ICategoryModel } from "../../models/category";
-import { EIcon } from "../../enums/icon";
 
 export interface CategoryState extends ICategoryModel {}
 
@@ -32,11 +31,22 @@ export const categorySlice = createSlice({
 
       return state;
     },
+    deleteCategory: (state, action: PayloadAction<{ id: number }>) => {
+      state = state.filter((stateItem) => {
+        return stateItem.id !== action.payload.id;
+      });
+
+      return state;
+    },
   },
 });
 
-export const { setCategory, updateCategory, setInitCategories } =
-  categorySlice.actions;
+export const {
+  setCategory,
+  updateCategory,
+  setInitCategories,
+  deleteCategory,
+} = categorySlice.actions;
 
 export const selectCount = (state: RootState) => state.category;
 

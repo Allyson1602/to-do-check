@@ -11,7 +11,8 @@ export interface ICategoryBody {
 export interface ICategoryService {
   listCategories: () => IResponse<ICategoryModel[]>;
   createCategory: (body: ICategoryBody) => IResponse<ICategoryModel>;
-  updateToDo: (body: ICategoryModel) => IResponse<ICategoryModel>;
+  updateCategory: (body: ICategoryModel) => IResponse<ICategoryModel>;
+  deleteCategory: (id: number) => IResponse<{ id: number }>;
 }
 
 const categoryService: ICategoryService = {
@@ -23,8 +24,12 @@ const categoryService: ICategoryService = {
     return api.post<ICategoryModel>("/category", body);
   },
 
-  updateToDo: (body: ICategoryModel): IResponse<ICategoryModel> => {
+  updateCategory: (body: ICategoryModel): IResponse<ICategoryModel> => {
     return api.put<ICategoryModel>(`/category/${body.id}`, body);
+  },
+
+  deleteCategory: (id: number): IResponse<{ id: number }> => {
+    return api.delete<{ id: number }>(`/category/${id}`);
   },
 };
 
