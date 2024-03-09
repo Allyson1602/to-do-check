@@ -45,8 +45,35 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   const [updateTodoOpen, setUpdateToDoOpen] = useState(false);
   const [deleteTodoOpen, setDeleteToDoOpen] = useState(false);
 
-  const handleLongPress = (event: GestureResponderEvent) => {
-    // - teste long press no redux e no bd
+  const handleLongPress = async (event: GestureResponderEvent) => {
+    const toDoItemData: IToDoItemModel = {
+      ...todoItem,
+      isImportant: !todoItem.isImportant,
+    };
+
+    const response = await toDoService.updateToDo(toDoItemData);
+
+    let categoryUpdate = categories.find((categoryItem) => {
+      return categoryItem.todoItems.some(({ id }) => id === response.data.id);
+    });
+
+    if (response.status === 200 && categoryUpdate) {
+      const toDoUpdated = categoryUpdate.todoItems.map((todoIt) => {
+        if (todoIt.id === response.data.id) {
+          return response.data;
+        }
+        return todoIt;
+      });
+
+      categoryUpdate = {
+        ...categoryUpdate,
+        todoItems: toDoUpdated,
+      };
+
+      dispatch(updateCategory(categoryUpdate));
+      setUpdateToDoOpen(false);
+      return;
+    }
   };
 
   const handleDeleteToDo = async () => {
