@@ -43,7 +43,7 @@ export default function MenuItem({
             </Text>
           </HStack>
 
-          {isFavorite && <Heart weight="duotone" color="#FFF" />}
+          {isFavorite ? <Heart weight="duotone" color="#FFF" /> : undefined}
         </HStack>
       </Pressable>
     </Box>

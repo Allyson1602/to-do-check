@@ -7,10 +7,8 @@ export const getCategoryMetadata = () => {
 
   categories.forEach((categoryItem) => {
     todoQuantity += categoryItem.todoItems.length;
-  });
 
-  categories.forEach((categoryItem) => {
-    const hasTodoDone = categoryItem.todoItems.filter(
+    const hasTodoDone = categoryItem.todoItems?.filter(
       (todoItem) => todoItem.isDone
     );
     todoDone += hasTodoDone.length;
