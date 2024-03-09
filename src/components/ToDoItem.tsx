@@ -17,7 +17,7 @@ import Check from "phosphor-react-native/src/icons/Check";
 import { GestureResponderEvent, Pressable } from "react-native";
 import { IToDoItemModel } from "../models/todo-item";
 import Modal from "./Modal";
-import toDoService, { IToDoBodyUpdate } from "../services/to-do";
+import toDoService from "../services/to-do";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { updateCategory } from "../redux/reducers/category";
 
@@ -76,28 +76,28 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     const { id: toDoId } = response.data;
 
     let categoryUpdate = categories.find((categoryItem) => {
-      return categoryItem.todoItems.some(({ id }) => id === toDoId);
+      return categoryItem.id === todoItem.categoryId;
     });
 
     if (response.status === 200 && categoryUpdate) {
       const toDoUpdated = categoryUpdate.todoItems.filter(({ id }) => {
-        return id !== toDoId;
+        return id != toDoId;
       });
 
-      categoryUpdate = {
+      const categoryUpdated = {
         ...categoryUpdate,
         todoItems: toDoUpdated,
       };
 
-      dispatch(updateCategory(categoryUpdate));
+      dispatch(updateCategory(categoryUpdated));
       setDeleteToDoOpen(false);
       return;
     }
   };
 
   const handleUpdateToDo = async () => {
-    const toDoData: IToDoBodyUpdate = {
-      id: todoItem.id,
+    const toDoData: IToDoItemModel = {
+      ...todoItem,
       title: toDoNameValue,
       description: toDoDescriptionValue,
     };

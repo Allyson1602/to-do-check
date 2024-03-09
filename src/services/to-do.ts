@@ -8,15 +8,9 @@ export interface IToDoBody {
   description: string;
 }
 
-export interface IToDoBodyUpdate {
-  id: number;
-  title: string;
-  description: string;
-}
-
 export interface IToDoService {
   deleteToDo: (id: number) => IResponse<{ id: number }>;
-  updateToDo: (body: IToDoBodyUpdate) => IResponse<IToDoItemModel>;
+  updateToDo: (body: IToDoItemModel) => IResponse<IToDoItemModel>;
   createToDo: (body: IToDoBody) => IResponse<IToDoItemModel>;
 }
 
@@ -25,7 +19,7 @@ const toDoService: IToDoService = {
     return api.delete<{ id: number }>(`/to-do/${id}`);
   },
 
-  updateToDo: (body: IToDoBodyUpdate): IResponse<IToDoItemModel> => {
+  updateToDo: (body: IToDoItemModel): IResponse<IToDoItemModel> => {
     return api.put<IToDoItemModel>(`/to-do/${body.id}`, body);
   },
 
