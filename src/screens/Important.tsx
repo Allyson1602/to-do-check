@@ -20,19 +20,19 @@ const Important: React.FC<TImportantProps> = ({ navigation }) => {
         </Center>
 
         <VStack space={"6"} p={"4"} mt={"10"}>
-          {getCategoryImportant().map((categoryItem) => {
+          {getCategoryImportant().map((categoryItem, index) => {
             return (
-              <Box key={categoryItem.id}>
+              <Box key={index}>
                 <Title iconName={categoryItem.iconName}>
                   {categoryItem.title}
                 </Title>
                 <Spacer h={"1"} />
 
                 <VStack space={"2"}>
-                  {categoryItem.todoItems?.map((todoItem) => {
+                  {categoryItem.todoItems?.map((todoItem, index) => {
                     return (
                       todoItem.isImportant && (
-                        <ToDoItem key={todoItem.id} todoItem={todoItem} />
+                        <ToDoItem key={index} todoItem={todoItem} />
                       )
                     );
                   })}

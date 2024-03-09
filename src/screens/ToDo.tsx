@@ -1,6 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
-import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import {
   Box,
   Button,
@@ -30,6 +29,7 @@ import { useState } from "react";
 import categoryService from "../services/category";
 import { ICategoryModel } from "../models/category";
 import { useAppDispatch } from "../hooks";
+import toDoService, { IToDoBody } from "../services/to-do";
 
 type TToDoProps = {
   navigation: StackNavigationProp<RootStackParamList, "ToDo">;
@@ -44,6 +44,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
 
   const [toDoNameValue, setToDoNameValue] = useState("");
+  const [toDoDescriptionValue, setToDoDescriptionValue] = useState("");
 
   if (category === undefined) {
     navigation.navigate(EScreenName.HOME);
@@ -53,6 +54,10 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
   const handleToDoName = (text: string) => {
     if (text.length > 35) return;
     setToDoNameValue(text);
+  };
+
+  const handleToDoDescription = (text: string) => {
+    setToDoDescriptionValue(text);
   };
 
   const handleIsFavorite = async () => {
@@ -81,8 +86,30 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     }
   };
 
-  const handleNewToDo = () => {
-    // - teste criar no redux e no bd
+  const handleNewToDo = async () => {
+    if (!toDoNameValue || !toDoDescriptionValue) return;
+
+    const toDoData: IToDoBody = {
+      categoryId: category.id,
+      title: toDoNameValue,
+      description: toDoDescriptionValue,
+    };
+
+    const response = await toDoService.createToDo(toDoData);
+
+    if (response.status === 201) {
+      const toDoCreated = response.data;
+
+      const categoryUpdated = {
+        ...category,
+        todoItems: [...category.todoItems, toDoCreated],
+      };
+
+      dispatch(updateCategory(categoryUpdated));
+
+      setNewToDoOpen(false);
+      return;
+    }
   };
 
   return (
@@ -127,8 +154,8 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
               />
             </Button>
 
-            {category.todoItems?.map((todoItem) => {
-              return <ToDoItem key={todoItem.id} todoItem={todoItem} />;
+            {category.todoItems?.map((todoItem, index) => {
+              return <ToDoItem key={index} todoItem={todoItem} />;
             })}
           </VStack>
 
@@ -197,8 +224,8 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
               p={"2"}
               minHeight={90}
               placeholder="Digite aqui"
-              isReadOnly
-              value={toDoNameValue}
+              value={toDoDescriptionValue}
+              onChangeText={handleToDoDescription}
               autoCompleteType={undefined} // bug
             />
           </VStack>

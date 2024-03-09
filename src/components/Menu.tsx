@@ -125,9 +125,9 @@ export default function Menu() {
 
                 <Spacer h={"1"} />
 
-                {categories.map((categoryItem) => (
+                {categories.map((categoryItem, index) => (
                   <MenuItem
-                    key={categoryItem.id}
+                    key={index}
                     id={categoryItem.id.toString()}
                     Icon={getIconByName(categoryItem.iconName)}
                     goTo={EScreenName.TODO}

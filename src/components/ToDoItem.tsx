@@ -14,15 +14,10 @@ import React, { useState } from "react";
 import DotsSixVertical from "phosphor-react-native/src/icons/DotsSixVertical";
 import CaretDown from "phosphor-react-native/src/icons/CaretDown";
 import Check from "phosphor-react-native/src/icons/Check";
-import {
-  GestureResponderEvent,
-  NativeSyntheticEvent,
-  Pressable,
-  TextInputChangeEventData,
-} from "react-native";
+import { GestureResponderEvent, Pressable } from "react-native";
 import { IToDoItemModel } from "../models/todo-item";
 import Modal from "./Modal";
-import toDoService, { IToDoBody } from "../services/to-do";
+import toDoService, { IToDoBodyUpdate } from "../services/to-do";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { updateCategory } from "../redux/reducers/category";
 
@@ -101,7 +96,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   };
 
   const handleUpdateToDo = async () => {
-    const toDoData: IToDoBody = {
+    const toDoData: IToDoBodyUpdate = {
       id: todoItem.id,
       title: toDoNameValue,
       description: toDoDescriptionValue,

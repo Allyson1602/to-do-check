@@ -18,7 +18,6 @@ import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import getIconByName from "../utils/get-icon-by-name";
 import { EIcon } from "../enums/icon";
-import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { useAppDispatch } from "../hooks";
 import { getCategoryMetadata } from "../utils/get-category-metadata";
 import categoryService, { ICategoryBody } from "../services/category";
