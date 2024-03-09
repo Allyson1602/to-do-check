@@ -50,10 +50,9 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     return <></>;
   }
 
-  const handleToDoName = (
-    event: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    setToDoNameValue(event.nativeEvent.text);
+  const handleToDoName = (text: string) => {
+    if (text.length > 35) return;
+    setToDoNameValue(text);
   };
 
   const handleIsFavorite = async () => {
@@ -186,7 +185,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
             <Input
               placeholder="Digite aqui"
               value={toDoNameValue}
-              onChange={handleToDoName}
+              onChangeText={handleToDoName}
             />
           </VStack>
 

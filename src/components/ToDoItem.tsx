@@ -133,6 +133,8 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   };
 
   const handleToDoName = (text: string) => {
+    if (text.length > 35) return;
+
     setToDoNameValue(text);
   };
 

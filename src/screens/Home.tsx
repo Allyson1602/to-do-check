@@ -75,11 +75,9 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
   };
 
   const handleCategoryName = (text: string) => {
-    const value = text;
+    if (text.length > 35) return;
 
-    if (value.length > 35) return;
-
-    setCategoryNameValue(value);
+    setCategoryNameValue(text);
   };
 
   return (
