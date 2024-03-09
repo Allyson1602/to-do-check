@@ -1,4 +1,4 @@
-export interface ITodoItemModel {
+export interface IToDoItemModel {
   id: number;
   description: string;
   title: string;

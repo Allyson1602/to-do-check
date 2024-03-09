@@ -20,14 +20,14 @@ import {
   Pressable,
   TextInputChangeEventData,
 } from "react-native";
-import { ITodoItemModel } from "../models/todo-item";
+import { IToDoItemModel } from "../models/todo-item";
 import Modal from "./Modal";
-import toDoService from "../services/to-do";
+import toDoService, { IToDoBody } from "../services/to-do";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { updateCategory } from "../redux/reducers/category";
 
 export interface IToDoItemProps {
-  todoItem: ITodoItemModel;
+  todoItem: IToDoItemModel;
 }
 
 export default function ToDoItem({ todoItem }: IToDoItemProps) {
@@ -73,8 +73,36 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     }
   };
 
-  const handleUpdateToDo = () => {
-    // - teste criar no redux e no bd
+  const handleUpdateToDo = async () => {
+    const toDoData: IToDoBody = {
+      id: todoItem.id,
+      title: toDoNameValue,
+      description: toDoDescriptionValue,
+    };
+
+    const response = await toDoService.updateToDo(toDoData);
+
+    let categoryUpdate = categories.find((categoryItem) => {
+      return categoryItem.todoItems.some(({ id }) => id === response.data.id);
+    });
+
+    if (response.status === 200 && categoryUpdate) {
+      const toDoUpdated = categoryUpdate.todoItems.map((todoIt) => {
+        if (todoIt.id === response.data.id) {
+          return response.data;
+        }
+        return todoIt;
+      });
+
+      categoryUpdate = {
+        ...categoryUpdate,
+        todoItems: toDoUpdated,
+      };
+
+      dispatch(updateCategory(categoryUpdate));
+      setUpdateToDoOpen(false);
+      return;
+    }
   };
 
   const handleToDoName = (
