@@ -22,12 +22,18 @@ import {
 } from "react-native";
 import { ITodoItemModel } from "../models/todo-item";
 import Modal from "./Modal";
+import toDoService from "../services/to-do";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { updateCategory } from "../redux/reducers/category";
 
 export interface IToDoItemProps {
   todoItem: ITodoItemModel;
 }
 
 export default function ToDoItem({ todoItem }: IToDoItemProps) {
+  const categories = useAppSelector((state) => state.category);
+  const dispatch = useAppDispatch();
+
   const [isOpenAccordion, setIsOpenAccordion] = useState(false);
   const [isDone, setIsDone] = useState(todoItem.isDone || false);
 
@@ -43,8 +49,28 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     // - teste long press no redux e no bd
   };
 
-  const handleDeleteToDo = () => {
-    // - teste criar no redux e no bd
+  const handleDeleteToDo = async () => {
+    const response = await toDoService.deleteToDo(todoItem.id);
+    const { id: toDoId } = response.data;
+
+    let categoryUpdate = categories.find((categoryItem) => {
+      return categoryItem.todoItems.some(({ id }) => id === toDoId);
+    });
+
+    if (response.status === 200 && categoryUpdate) {
+      const toDoUpdated = categoryUpdate.todoItems.filter(({ id }) => {
+        return id !== toDoId;
+      });
+
+      categoryUpdate = {
+        ...categoryUpdate,
+        todoItems: toDoUpdated,
+      };
+
+      dispatch(updateCategory(categoryUpdate));
+      setDeleteToDoOpen(false);
+      return;
+    }
   };
 
   const handleUpdateToDo = () => {
