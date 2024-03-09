@@ -105,16 +105,12 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     }
   };
 
-  const handleToDoName = (
-    event: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    setToDoNameValue(event.nativeEvent.text);
+  const handleToDoName = (text: string) => {
+    setToDoNameValue(text);
   };
 
-  const handleToDoDescription = (
-    event: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    setToDoDescriptionValue(event.nativeEvent.text);
+  const handleToDoDescription = (text: string) => {
+    setToDoDescriptionValue(text);
   };
 
   return (
@@ -231,7 +227,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
             <Input
               placeholder="Digite aqui"
               value={toDoNameValue}
-              onChange={handleToDoName}
+              onChangeText={handleToDoName}
             />
           </VStack>
 
@@ -244,7 +240,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
               minHeight={90}
               placeholder="Digite aqui"
               value={toDoDescriptionValue}
-              onChange={handleToDoDescription}
+              onChangeText={handleToDoDescription}
               autoCompleteType={undefined} // bug
             />
           </VStack>

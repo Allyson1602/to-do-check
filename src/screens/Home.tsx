@@ -74,10 +74,8 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
     setIconSelected(iconName);
   };
 
-  const handleCategoryName = (
-    event: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    const value = event.nativeEvent.text;
+  const handleCategoryName = (text: string) => {
+    const value = text;
 
     if (value.length > 35) return;
 
@@ -292,7 +290,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
             <Input
               placeholder="Digite aqui"
               value={categoryNameValue}
-              onChange={handleCategoryName}
+              onChangeText={handleCategoryName}
             />
           </VStack>
         </VStack>
