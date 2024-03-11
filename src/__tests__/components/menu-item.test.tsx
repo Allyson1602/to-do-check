@@ -19,6 +19,6 @@ describe("Test for Menu Item Component", () => {
     );
 
     const iconHeart = screen.getByTestId("icon-heart");
-    expect(iconHeart).toBeInTheDocument();
+    expect(iconHeart).toBeTruthy();
   });
 });
