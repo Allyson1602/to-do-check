@@ -30,7 +30,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   const dispatch = useAppDispatch();
 
   const [isOpenAccordion, setIsOpenAccordion] = useState(false);
-  const [isDone, setIsDone] = useState(todoItem.isDone || false);
+  const [isdone, setIsDone] = useState(todoItem.isdone || false);
 
   const [toDoNameValue, setToDoNameValue] = useState(todoItem.title);
   const [toDoDescriptionValue, setToDoDescriptionValue] = useState(
@@ -44,11 +44,11 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     const response = await toDoService.updateToDo(toDoItemData);
 
     let categoryUpdate = categories.find((categoryItem) => {
-      return categoryItem.todoItems.some(({ id }) => id === response.data.id);
+      return categoryItem.todoitems.some(({ id }) => id === response.data.id);
     });
 
     if (response.status === 200 && categoryUpdate) {
-      const toDoUpdated = categoryUpdate.todoItems.map((todoIt) => {
+      const toDoUpdated = categoryUpdate.todoitems.map((todoIt) => {
         if (todoIt.id === response.data.id) {
           return response.data;
         }
@@ -57,7 +57,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
       categoryUpdate = {
         ...categoryUpdate,
-        todoItems: toDoUpdated,
+        todoitems: toDoUpdated,
       };
 
       dispatch(updateCategory(categoryUpdate));
@@ -71,7 +71,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   const handleLongPress = async (event: GestureResponderEvent) => {
     const toDoItemData: IToDoItemModel = {
       ...todoItem,
-      isImportant: !todoItem.isImportant,
+      isimportant: !todoItem.isimportant,
     };
 
     updateToDo(toDoItemData);
@@ -82,17 +82,17 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     const { id: toDoId } = response.data;
 
     let categoryUpdate = categories.find((categoryItem) => {
-      return categoryItem.id === todoItem.categoryId;
+      return categoryItem.id === todoItem.categoryid;
     });
 
     if (response.status === 200 && categoryUpdate) {
-      const toDoUpdated = categoryUpdate.todoItems.filter(({ id }) => {
+      const toDoUpdated = categoryUpdate.todoitems.filter(({ id }) => {
         return id != toDoId;
       });
 
       const categoryUpdated = {
         ...categoryUpdate,
-        todoItems: toDoUpdated,
+        todoitems: toDoUpdated,
       };
 
       dispatch(updateCategory(categoryUpdated));
@@ -111,11 +111,11 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     const response = await toDoService.updateToDo(toDoData);
 
     let categoryUpdate = categories.find((categoryItem) => {
-      return categoryItem.todoItems.some(({ id }) => id === response.data.id);
+      return categoryItem.todoitems.some(({ id }) => id === response.data.id);
     });
 
     if (response.status === 200 && categoryUpdate) {
-      const toDoUpdated = categoryUpdate.todoItems.map((todoIt) => {
+      const toDoUpdated = categoryUpdate.todoitems.map((todoIt) => {
         if (todoIt.id === response.data.id) {
           return response.data;
         }
@@ -124,7 +124,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
       categoryUpdate = {
         ...categoryUpdate,
-        todoItems: toDoUpdated,
+        todoitems: toDoUpdated,
       };
 
       dispatch(updateCategory(categoryUpdate));
@@ -144,11 +144,11 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   };
 
   const handleToggleCheck = async () => {
-    const done = !isDone;
+    const done = !isdone;
 
     const toDoItemData: IToDoItemModel = {
       ...todoItem,
-      isDone: done,
+      isdone: done,
     };
 
     const result = await updateToDo(toDoItemData);
@@ -162,7 +162,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     <>
       <Pressable onLongPress={handleLongPress}>
         <Box
-          bg={todoItem.isImportant ? "#8A3FFC80" : "#8A3FFC40"}
+          bg={todoItem.isimportant ? "#8A3FFC80" : "#8A3FFC40"}
           borderRadius={"xl"}
         >
           <HStack
@@ -176,8 +176,8 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
             <HStack flexGrow={1} pl={"1"}>
               <Checkbox
-                isChecked={isDone}
-                value="isDone"
+                isChecked={isdone}
+                value="isdone"
                 borderColor={"#8A3FFC"}
                 bg="transparent"
                 _checked={{ bg: "#8A3FFC" }}
@@ -189,7 +189,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
               >
                 <Text
                   color="#3B1F65"
-                  textDecorationLine={isDone ? "line-through" : "none"}
+                  textDecorationLine={isdone ? "line-through" : "none"}
                 >
                   {todoItem.title}
                 </Text>

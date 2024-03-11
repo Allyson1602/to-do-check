@@ -6,12 +6,12 @@ export const getCategoryMetadata = () => {
   let todoDone = 0;
 
   categories.forEach((categoryItem) => {
-    todoQuantity += categoryItem.todoItems.length;
+    todoQuantity += categoryItem.todoitems?.length || 0;
 
-    const hasTodoDone = categoryItem.todoItems?.filter(
-      (todoItem) => todoItem.isDone
+    const hasTodoDone = categoryItem.todoitems?.filter(
+      (todoItem) => todoItem.isdone
     );
-    todoDone += hasTodoDone.length;
+    todoDone += hasTodoDone?.length || 0;
   });
 
   return {

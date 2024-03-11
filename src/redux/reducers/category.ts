@@ -15,7 +15,7 @@ export const categorySlice = createSlice({
 
       return state;
     },
-    setInitCategories: (state, action: PayloadAction<CategoryState[]>) => {
+    setCategories: (state, action: PayloadAction<CategoryState[]>) => {
       state = action.payload;
 
       return state;
@@ -41,12 +41,8 @@ export const categorySlice = createSlice({
   },
 });
 
-export const {
-  setCategory,
-  updateCategory,
-  setInitCategories,
-  deleteCategory,
-} = categorySlice.actions;
+export const { setCategory, updateCategory, setCategories, deleteCategory } =
+  categorySlice.actions;
 
 export const selectCount = (state: RootState) => state.category;
 

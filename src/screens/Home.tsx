@@ -21,7 +21,7 @@ import { EIcon } from "../enums/icon";
 import { useAppDispatch } from "../hooks";
 import { getCategoryMetadata } from "../utils/get-category-metadata";
 import categoryService, { ICategoryBody } from "../services/category";
-import { setCategory, setInitCategories } from "../redux/reducers/category";
+import { setCategory, setCategories } from "../redux/reducers/category";
 import { EScreenName } from "../enums/navigation";
 
 type THomeProps = {
@@ -40,7 +40,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
     categoryService.listCategories().then((response) => {
       if (response.status === 200) {
         const categories = response.data;
-        dispatch(setInitCategories(categories));
+        dispatch(setCategories(categories));
       }
     });
   }, []);
@@ -49,7 +49,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
     if (!iconSelected || !categoryNameValue) return;
 
     const categoryData: ICategoryBody = {
-      iconName: iconSelected,
+      iconname: iconSelected,
       title: categoryNameValue,
     };
 
@@ -69,8 +69,8 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
     }
   };
 
-  const handlePressIconButton = (iconName: EIcon) => {
-    setIconSelected(iconName);
+  const handlePressIconButton = (iconname: EIcon) => {
+    setIconSelected(iconname);
   };
 
   const handleCategoryName = (text: string) => {

@@ -129,9 +129,9 @@ export default function Menu() {
                   <MenuItem
                     key={index}
                     id={categoryItem.id.toString()}
-                    Icon={getIconByName(categoryItem.iconName)}
+                    Icon={getIconByName(categoryItem.iconname)}
                     goTo={EScreenName.TODO}
-                    isFavorite={categoryItem.isFavorite}
+                    isfavorite={categoryItem.isfavorite}
                     callBack={callBackClickMenuItem}
                   >
                     {categoryItem.title}

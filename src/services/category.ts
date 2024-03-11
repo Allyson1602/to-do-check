@@ -4,7 +4,7 @@ import { ICategoryModel } from "../models/category";
 import { IResponse } from "../types/request";
 
 export interface ICategoryBody {
-  iconName: EIcon;
+  iconname: EIcon;
   title: string;
 }
 

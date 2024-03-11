@@ -6,13 +6,13 @@ import { EIcon } from "../enums/icon";
 export interface ITitleProps {
   textColor?: string;
   size?: "small" | "medium";
-  iconName?: EIcon;
+  iconname?: EIcon;
   children: React.ReactNode;
 }
 
 export default function Title(props: ITitleProps) {
   const size = props.size || "small";
-  const Icon = props.iconName ? getIconByName(props.iconName) : undefined;
+  const Icon = props.iconname ? getIconByName(props.iconname) : undefined;
 
   return (
     <Box py={"1"}>

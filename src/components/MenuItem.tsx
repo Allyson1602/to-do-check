@@ -9,7 +9,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
 
 export interface IMenuItemProps {
-  isFavorite?: boolean;
+  isfavorite?: boolean;
   id: string;
   Icon: TIcon;
   goTo: EScreenName;
@@ -18,7 +18,7 @@ export interface IMenuItemProps {
 }
 
 export default function MenuItem({
-  isFavorite = false,
+  isfavorite = false,
   id,
   Icon,
   goTo,
@@ -43,7 +43,7 @@ export default function MenuItem({
             </Text>
           </HStack>
 
-          {isFavorite ? <Heart weight="duotone" color="#FFF" /> : undefined}
+          {isfavorite ? <Heart weight="duotone" color="#FFF" /> : undefined}
         </HStack>
       </Pressable>
     </Box>

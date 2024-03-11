@@ -63,7 +63,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
   const handleIsFavorite = async () => {
     const categoryData: ICategoryModel = {
       ...category,
-      isFavorite: !category.isFavorite,
+      isfavorite: !category.isfavorite,
     };
 
     const response = await categoryService.updateCategory(categoryData);
@@ -78,10 +78,10 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
 
   const handleDeleteCategory = async () => {
     const response = await categoryService.deleteCategory(category.id);
-    const categoryId = response.data;
+    const categoryid = response.data;
 
-    if (response.status === 200 && categoryId) {
-      dispatch(deleteCategory(categoryId));
+    if (response.status === 200 && categoryid) {
+      dispatch(deleteCategory(categoryid));
       return;
     }
   };
@@ -90,7 +90,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
     if (!toDoNameValue || !toDoDescriptionValue) return;
 
     const toDoData: IToDoBody = {
-      categoryId: category.id,
+      categoryid: category.id,
       title: toDoNameValue,
       description: toDoDescriptionValue,
     };
@@ -102,7 +102,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
 
       const categoryUpdated = {
         ...category,
-        todoItems: [...category.todoItems, toDoCreated],
+        todoitems: [...category.todoitems, toDoCreated],
       };
 
       dispatch(updateCategory(categoryUpdated));
@@ -128,20 +128,20 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
             icon={
               <Heart
                 size={32}
-                weight={category.isFavorite ? "fill" : "regular"}
+                weight={category.isfavorite ? "fill" : "regular"}
                 color="#8A3FFC"
               />
             }
             onPress={handleIsFavorite}
           />
 
-          <Title iconName={category.iconName}>{category.title}</Title>
+          <Title iconname={category.iconname}>{category.title}</Title>
         </Box>
 
         <VStack justifyContent={"space-between"} space={"6"}>
           <VStack mt={"2"} space={"2"}>
             <Button
-              bg={category.todoItems.length > 0 ? "#8A3FFC40" : "#8A3FFC"}
+              bg={category.todoitems.length > 0 ? "#8A3FFC40" : "#8A3FFC"}
               borderColor={"#8A3FFC"}
               borderWidth={1}
               borderRadius={12}
@@ -150,11 +150,11 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
               <Plus
                 size={32}
                 weight="bold"
-                color={category.todoItems.length > 0 ? "#8A3FFC" : "white"}
+                color={category.todoitems.length > 0 ? "#8A3FFC" : "white"}
               />
             </Button>
 
-            {category.todoItems?.map((todoItem, index) => {
+            {category.todoitems?.map((todoItem, index) => {
               return <ToDoItem key={index} todoItem={todoItem} />;
             })}
           </VStack>

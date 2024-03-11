@@ -1,8 +1,8 @@
 export interface IToDoItemModel {
   id: number;
-  categoryId: number;
+  categoryid: number;
   description: string;
   title: string;
-  isImportant: boolean;
-  isDone: boolean;
+  isimportant: boolean;
+  isdone: boolean;
 }

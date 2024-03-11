@@ -3,8 +3,8 @@ import { IToDoItemModel } from "./todo-item";
 
 export interface ICategoryModel {
   id: number;
-  iconName: EIcon;
-  isFavorite: boolean;
+  iconname: EIcon;
+  isfavorite: boolean;
   title: string;
-  todoItems: IToDoItemModel[];
+  todoitems: IToDoItemModel[];
 }

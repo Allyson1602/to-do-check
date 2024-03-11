@@ -3,7 +3,7 @@ import { IToDoItemModel } from "../models/todo-item";
 import { IResponse } from "../types/request";
 
 export interface IToDoBody {
-  categoryId: number;
+  categoryid: number;
   title: string;
   description: string;
 }
