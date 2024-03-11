@@ -40,12 +40,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
   const [updateTodoOpen, setUpdateToDoOpen] = useState(false);
   const [deleteTodoOpen, setDeleteToDoOpen] = useState(false);
 
-  const handleLongPress = async (event: GestureResponderEvent) => {
-    const toDoItemData: IToDoItemModel = {
-      ...todoItem,
-      isImportant: !todoItem.isImportant,
-    };
-
+  const updateToDo = async (toDoItemData: IToDoItemModel): Promise<boolean> => {
     const response = await toDoService.updateToDo(toDoItemData);
 
     let categoryUpdate = categories.find((categoryItem) => {
@@ -67,8 +62,19 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
 
       dispatch(updateCategory(categoryUpdate));
       setUpdateToDoOpen(false);
-      return;
+      return true;
     }
+
+    return false;
+  };
+
+  const handleLongPress = async (event: GestureResponderEvent) => {
+    const toDoItemData: IToDoItemModel = {
+      ...todoItem,
+      isImportant: !todoItem.isImportant,
+    };
+
+    updateToDo(toDoItemData);
   };
 
   const handleDeleteToDo = async () => {
@@ -137,6 +143,21 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
     setToDoDescriptionValue(text);
   };
 
+  const handleToggleCheck = async () => {
+    const done = !isDone;
+
+    const toDoItemData: IToDoItemModel = {
+      ...todoItem,
+      isDone: done,
+    };
+
+    const result = await updateToDo(toDoItemData);
+
+    if (result) {
+      setIsDone(done);
+    }
+  };
+
   return (
     <>
       <Pressable onLongPress={handleLongPress}>
@@ -164,9 +185,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
                   as: Check,
                   color: "#3B1F65",
                 }}
-                onChange={() => {
-                  setIsDone(!isDone);
-                }}
+                onChange={handleToggleCheck}
               >
                 <Text
                   color="#3B1F65"
