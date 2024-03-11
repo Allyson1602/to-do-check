@@ -109,6 +109,8 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
       dispatch(updateCategory(categoryUpdated));
 
       setNewToDoOpen(false);
+      setToDoNameValue("");
+      setToDoDescriptionValue("");
       return;
     }
   };
@@ -203,7 +205,11 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
       <Modal
         title="Novo afazer"
         isOpen={newToDoOpen}
-        onClose={() => setNewToDoOpen(false)}
+        onClose={() => {
+          setNewToDoOpen(false);
+          setToDoNameValue("");
+          setToDoDescriptionValue("");
+        }}
       >
         <VStack py={"6"} space={"3"}>
           <VStack space={"0.5"}>

@@ -61,6 +61,7 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
       dispatch(setCategory(categoryCreated));
 
       setNewCategoryOpen(false);
+      setCategoryNameValue("");
       navigation.navigate({
         name: EScreenName.TODO,
         key: categoryCreated.id.toString(),
@@ -182,7 +183,10 @@ const Home: React.FC<THomeProps> = ({ navigation }) => {
       <Modal
         title="Nova categoria"
         isOpen={newCategoryOpen}
-        onClose={() => setNewCategoryOpen(false)}
+        onClose={() => {
+          setNewCategoryOpen(false);
+          setCategoryNameValue("");
+        }}
       >
         <VStack py={"6"}>
           <VStack pb={"3"}>

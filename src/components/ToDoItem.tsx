@@ -108,29 +108,7 @@ export default function ToDoItem({ todoItem }: IToDoItemProps) {
       description: toDoDescriptionValue,
     };
 
-    const response = await toDoService.updateToDo(toDoData);
-
-    let categoryUpdate = categories.find((categoryItem) => {
-      return categoryItem.todoitems.some(({ id }) => id === response.data.id);
-    });
-
-    if (response.status === 200 && categoryUpdate) {
-      const toDoUpdated = categoryUpdate.todoitems.map((todoIt) => {
-        if (todoIt.id === response.data.id) {
-          return response.data;
-        }
-        return todoIt;
-      });
-
-      categoryUpdate = {
-        ...categoryUpdate,
-        todoitems: toDoUpdated,
-      };
-
-      dispatch(updateCategory(categoryUpdate));
-      setUpdateToDoOpen(false);
-      return;
-    }
+    updateToDo(toDoData);
   };
 
   const handleToDoName = (text: string) => {
