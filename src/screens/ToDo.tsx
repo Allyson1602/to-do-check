@@ -82,6 +82,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
 
     if (response.status === 200 && categoryid) {
       dispatch(deleteCategory(categoryid));
+      setDeleteCategoryOpen(false);
       return;
     }
   };

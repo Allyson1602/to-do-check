@@ -33,7 +33,7 @@ export const categorySlice = createSlice({
     },
     deleteCategory: (state, action: PayloadAction<{ id: number }>) => {
       state = state.filter((stateItem) => {
-        return stateItem.id !== action.payload.id;
+        return stateItem.id != action.payload.id;
       });
 
       return state;
