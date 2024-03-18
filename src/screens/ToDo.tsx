@@ -1,5 +1,5 @@
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation";
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../types/navigation';
 import {
   Box,
   Button,
@@ -10,41 +10,41 @@ import {
   ScrollView,
   Input,
   TextArea,
-} from "native-base";
-import HeaderTitle from "../components/HeaderTitle";
-import Heart from "phosphor-react-native/src/icons/Heart";
-import Plus from "phosphor-react-native/src/icons/Plus";
-import { RouteProp } from "@react-navigation/native";
-import { getCategoryById } from "../utils/get-category-by-id";
-import Title from "../components/Title";
-import { EScreenName } from "../enums/navigation";
+} from 'native-base';
+import HeaderTitle from '../components/HeaderTitle';
+import Heart from 'phosphor-react-native/src/icons/Heart';
+import Plus from 'phosphor-react-native/src/icons/Plus';
+import {RouteProp} from '@react-navigation/native';
+import {getCategoryById} from '../utils/get-category-by-id';
+import Title from '../components/Title';
+import {EScreenName} from '../enums/navigation';
 import {
   CategoryState,
   deleteCategory,
   updateCategory,
-} from "../redux/reducers/category";
-import ToDoItem from "../components/ToDoItem";
-import Modal from "../components/Modal";
-import { useState } from "react";
-import categoryService from "../services/category";
-import { ICategoryModel } from "../models/category";
-import { useAppDispatch } from "../hooks";
-import toDoService, { IToDoBody } from "../services/to-do";
+} from '../redux/reducers/category';
+import ToDoItem from '../components/ToDoItem';
+import Modal from '../components/Modal';
+import {useState} from 'react';
+import categoryService from '../services/category';
+import {ICategoryModel} from '../models/category';
+import {useAppDispatch} from '../hooks';
+import toDoService, {IToDoBody} from '../services/to-do';
 
 type TToDoProps = {
-  navigation: StackNavigationProp<RootStackParamList, "ToDo">;
-  route: RouteProp<RootStackParamList, "ToDo">;
+  navigation: StackNavigationProp<RootStackParamList, 'ToDo'>;
+  route: RouteProp<RootStackParamList, 'ToDo'>;
 };
 
-const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
+const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
   const category = getCategoryById(parseInt(route.key)) as CategoryState;
   const dispatch = useAppDispatch();
 
   const [newToDoOpen, setNewToDoOpen] = useState(false);
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
 
-  const [toDoNameValue, setToDoNameValue] = useState("");
-  const [toDoDescriptionValue, setToDoDescriptionValue] = useState("");
+  const [toDoNameValue, setToDoNameValue] = useState('');
+  const [toDoDescriptionValue, setToDoDescriptionValue] = useState('');
 
   if (category === undefined) {
     navigation.navigate(EScreenName.HOME);
@@ -109,29 +109,29 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
       dispatch(updateCategory(categoryUpdated));
 
       setNewToDoOpen(false);
-      setToDoNameValue("");
-      setToDoDescriptionValue("");
+      setToDoNameValue('');
+      setToDoDescriptionValue('');
       return;
     }
   };
 
   return (
     <ScrollView>
-      <Box safeArea px={"4"} h={"full"}>
+      <Box safeArea px={'4'} h={'full'}>
         <Center>
           <HeaderTitle text="Afazeres" />
         </Center>
 
-        <Box position={"relative"} mt={"10"}>
+        <Box position={'relative'} mt={'16'}>
           <IconButton
-            position={"absolute"}
+            position={'absolute'}
             top={-5}
             right={0}
-            p={"0"}
+            p={'0'}
             icon={
               <Heart
                 size={32}
-                weight={category.isfavorite ? "fill" : "regular"}
+                weight={category.isfavorite ? 'fill' : 'regular'}
                 color="#8A3FFC"
               />
             }
@@ -141,19 +141,18 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
           <Title iconname={category.iconname}>{category.title}</Title>
         </Box>
 
-        <VStack justifyContent={"space-between"} space={"6"}>
-          <VStack mt={"2"} space={"2"}>
+        <VStack justifyContent={'space-between'} space={'6'}>
+          <VStack mt={'2'} space={'2'}>
             <Button
-              bg={category.todoitems.length > 0 ? "#8A3FFC40" : "#8A3FFC"}
-              borderColor={"#8A3FFC"}
+              bg={category.todoitems.length > 0 ? '#8A3FFC40' : '#8A3FFC'}
+              borderColor={'#8A3FFC'}
               borderWidth={1}
               borderRadius={12}
-              onPress={() => setNewToDoOpen(true)}
-            >
+              onPress={() => setNewToDoOpen(true)}>
               <Plus
                 size={32}
                 weight="bold"
-                color={category.todoitems.length > 0 ? "#8A3FFC" : "white"}
+                color={category.todoitems.length > 0 ? '#8A3FFC' : 'white'}
               />
             </Button>
 
@@ -163,15 +162,14 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
           </VStack>
 
           <Button
-            w={"1/2"}
-            mx={"auto"}
-            variant={"outline"}
-            borderColor={"#E41C1C"}
-            borderStyle={"solid"}
+            w={'1/2'}
+            mx={'auto'}
+            variant={'outline'}
+            borderColor={'#E41C1C'}
+            borderStyle={'solid'}
             borderWidth={1}
-            onPress={() => setDeleteCategoryOpen(true)}
-          >
-            <Text color={"#E41C1C"}>apagar categoria</Text>
+            onPress={() => setDeleteCategoryOpen(true)}>
+            <Text color={'#E41C1C'}>apagar categoria</Text>
           </Button>
         </VStack>
       </Box>
@@ -179,25 +177,22 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
       <Modal
         title="Apagar categoria"
         isOpen={deleteCategoryOpen}
-        onClose={() => setDeleteCategoryOpen(false)}
-      >
+        onClose={() => setDeleteCategoryOpen(false)}>
         <Text
-          textAlign={"center"}
-          color={"#3B1F65"}
-          py={"4"}
+          textAlign={'center'}
+          color={'#3B1F65'}
+          py={'4'}
           w={280}
-          mx={"auto"}
-        >
+          mx={'auto'}>
           Deseja realmente apagar este categoria?
         </Text>
 
         <Button
           w={170}
-          mx={"auto"}
-          my={"4"}
-          bg={"#E41C1C"}
-          onPress={handleDeleteCategory}
-        >
+          mx={'auto'}
+          my={'4'}
+          bg={'#E41C1C'}
+          onPress={handleDeleteCategory}>
           Apagar
         </Button>
       </Modal>
@@ -207,13 +202,12 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
         isOpen={newToDoOpen}
         onClose={() => {
           setNewToDoOpen(false);
-          setToDoNameValue("");
-          setToDoDescriptionValue("");
-        }}
-      >
-        <VStack py={"6"} space={"3"}>
-          <VStack space={"0.5"}>
-            <Text color={"#3B1F65"} pl={"0.5"}>
+          setToDoNameValue('');
+          setToDoDescriptionValue('');
+        }}>
+        <VStack py={'6'} space={'3'}>
+          <VStack space={'0.5'}>
+            <Text color={'#3B1F65'} pl={'0.5'}>
               Nome do afazer:
             </Text>
             <Input
@@ -223,12 +217,12 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
             />
           </VStack>
 
-          <VStack space={"0.5"}>
-            <Text color={"#3B1F65"} pl={"0.5"}>
+          <VStack space={'0.5'}>
+            <Text color={'#3B1F65'} pl={'0.5'}>
               Descrição:
             </Text>
             <TextArea
-              p={"2"}
+              p={'2'}
               minHeight={90}
               placeholder="Digite aqui"
               value={toDoDescriptionValue}
@@ -238,7 +232,7 @@ const ToDo: React.FC<TToDoProps> = ({ navigation, route }) => {
           </VStack>
         </VStack>
 
-        <Button w={170} mx={"auto"} my={"4"} onPress={handleNewToDo}>
+        <Button w={170} mx={'auto'} my={'4'} onPress={handleNewToDo}>
           Criar
         </Button>
       </Modal>

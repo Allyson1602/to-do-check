@@ -13,7 +13,6 @@ import {
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/navigation';
 import HeaderTitle from '../components/HeaderTitle';
-// import { LinearGradient } from "expo-linear-gradient";
 import Modal from '../components/Modal';
 import {useEffect, useState} from 'react';
 import getIconByName from '../utils/get-icon-by-name';

@@ -1,12 +1,12 @@
-import React from "react";
-import { HStack, Text, Box } from "native-base";
-import { TIcon } from "../types/icon";
-import Heart from "phosphor-react-native/src/icons/Heart";
-import { EScreenName } from "../enums/navigation";
-import { Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation";
+import React from 'react';
+import {HStack, Text, Box} from 'native-base';
+import {TIcon} from '../types/icon';
+import Heart from 'phosphor-react-native/src/icons/Heart';
+import {EScreenName} from '../enums/navigation';
+import {Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../types/navigation';
 
 export interface IMenuItemProps {
   isfavorite?: boolean;
@@ -28,17 +28,17 @@ export default function MenuItem({
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleClickItem = () => {
-    navigation.navigate({ name: goTo, key: id });
+    navigation.navigate({name: goTo, key: id});
     callBack?.();
   };
 
   return (
-    <Box px={"1"} py={"1"} mb={"1"}>
+    <Box px={'1'} py={'1'} mb={'1'}>
       <Pressable onPress={handleClickItem}>
-        <HStack w={"full"} justifyContent={"space-between"}>
-          <HStack space={"2"}>
+        <HStack w={'full'} justifyContent={'space-between'}>
+          <HStack space={'2'}>
             <Icon color="#FFF" size={26} />
-            <Text color="#FFF" fontSize={"md"} alignSelf={"flex-end"}>
+            <Text color="#FFF" fontSize={'md'} alignSelf={'flex-end'}>
               {children}
             </Text>
           </HStack>
