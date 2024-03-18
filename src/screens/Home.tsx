@@ -23,6 +23,7 @@ import {getCategoryMetadata} from '../utils/get-category-metadata';
 import categoryService, {ICategoryBody} from '../services/category';
 import {setCategory, setCategories} from '../redux/reducers/category';
 import {EScreenName} from '../enums/navigation';
+import {ImageBackground} from 'react-native';
 
 type THomeProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
@@ -140,22 +141,24 @@ const Home: React.FC<THomeProps> = ({navigation}) => {
           </HStack>
         </Box>
 
-        <VStack>
-          {/* <LinearGradient
-            colors={["#8A3FFC", "#CF2CD2"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0.5, y: 0.5 }}
-            style={{
-              borderRadius: 5,
-              marginTop: 48,
-            }}
-          > */}
-          <Button variant={'unstyled'} onPress={() => setNewCategoryOpen(true)}>
-            <Text color={'white'} textAlign={'center'} fontSize={'xl'} py={'1'}>
-              Criar nova categoria
-            </Text>
-          </Button>
-          {/* </LinearGradient> */}
+        <VStack mt={'12'}>
+          <ImageBackground
+            source={require('../../assets/gradient-button.png')}
+            resizeMode="stretch"
+            borderRadius={5}>
+            <Button
+              variant={'unstyled'}
+              onPress={() => setNewCategoryOpen(true)}>
+              <Text
+                color={'white'}
+                textAlign={'center'}
+                fontSize={'xl'}
+                py={'1'}>
+                Criar nova categoria
+              </Text>
+            </Button>
+          </ImageBackground>
+
           <Text
             fontSize={'xs'}
             textAlign={'center'}
