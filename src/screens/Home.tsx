@@ -9,6 +9,7 @@ import {
   Input,
   IconButton,
   Icon,
+  useToast,
 } from 'native-base';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/navigation';
@@ -35,6 +36,7 @@ const Home: React.FC<THomeProps> = ({navigation}) => {
 
   const toDoMetadata = getCategoryMetadata();
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   useEffect(() => {
     categoryService.listCategories().then(response => {
@@ -46,7 +48,22 @@ const Home: React.FC<THomeProps> = ({navigation}) => {
   }, []);
 
   const handleNewCategory = async () => {
-    if (!iconSelected || !categoryNameValue) return;
+    if (!iconSelected || !categoryNameValue) {
+      if (!toast.isActive('new-category-error')) {
+        toast.show({
+          id: 'new-category-error',
+          render: () => {
+            return (
+              <Box bg="error.400" px="2" py="1" rounded="sm" mb={3}>
+                <Text color={'white'}>Por favor, preencha todos os campos</Text>
+              </Box>
+            );
+          },
+        });
+      }
+
+      return;
+    }
 
     const categoryData: ICategoryBody = {
       iconname: iconSelected,

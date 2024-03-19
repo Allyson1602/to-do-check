@@ -9,6 +9,7 @@ import {
   Text,
   TextArea,
   VStack,
+  useToast,
 } from 'native-base';
 import React, {useState} from 'react';
 import DotsSixVertical from 'phosphor-react-native/src/icons/DotsSixVertical';
@@ -28,6 +29,7 @@ export interface IToDoItemProps {
 export default function ToDoItem({todoItem}: IToDoItemProps) {
   const categories = useAppSelector(state => state.category);
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const [isdone, setIsDone] = useState(todoItem.isdone);
   const [isimportant, setIsImportant] = useState(todoItem.isimportant);
@@ -108,6 +110,21 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
   };
 
   const handleUpdateToDo = async () => {
+    if (!toDoNameValue && !toast.isActive('new-to-do-error')) {
+      toast.show({
+        id: 'new-to-do-error',
+        render: () => {
+          return (
+            <Box bg="error.400" px="2" py="1" rounded="sm" mb={3}>
+              <Text color={'white'}>Por favor, preencha o nome do afazer</Text>
+            </Box>
+          );
+        },
+      });
+
+      return;
+    }
+
     const toDoData: IToDoItemModel = {
       ...todoItem,
       title: toDoNameValue,

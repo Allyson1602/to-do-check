@@ -10,6 +10,7 @@ import {
   ScrollView,
   Input,
   TextArea,
+  useToast,
 } from 'native-base';
 import HeaderTitle from '../components/HeaderTitle';
 import Heart from 'phosphor-react-native/src/icons/Heart';
@@ -39,6 +40,7 @@ type TToDoProps = {
 const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
   const category = getCategoryById(parseInt(route.key)) as CategoryState;
   const dispatch = useAppDispatch();
+  const toast = useToast();
 
   const [newToDoOpen, setNewToDoOpen] = useState(false);
   const [deleteCategoryOpen, setDeleteCategoryOpen] = useState(false);
@@ -86,7 +88,20 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
   };
 
   const handleNewToDo = async () => {
-    if (!toDoNameValue || !toDoDescriptionValue) return;
+    if (!toDoNameValue && !toast.isActive('new-to-do-error')) {
+      toast.show({
+        id: 'new-to-do-error',
+        render: () => {
+          return (
+            <Box bg="error.400" px="2" py="1" rounded="sm" mb={3}>
+              <Text color={'white'}>Por favor, preencha o nome do afazer</Text>
+            </Box>
+          );
+        },
+      });
+
+      return;
+    }
 
     const toDoData: IToDoBody = {
       categoryid: category.id,
