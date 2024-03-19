@@ -69,9 +69,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
     const response = await categoryService.updateCategory(categoryData);
 
     if (response.status === 200) {
-      const categoryUpdated = response.data;
-
-      dispatch(updateCategory(categoryUpdated));
+      dispatch(updateCategory({...response.data}));
       return;
     }
   };
@@ -156,8 +154,8 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
               />
             </Button>
 
-            {category.todoitems?.map((todoItem, index) => {
-              return <ToDoItem key={index} todoItem={todoItem} />;
+            {category.todoitems?.map(todoItem => {
+              return <ToDoItem key={todoItem.id} todoItem={todoItem} />;
             })}
           </VStack>
 
@@ -222,7 +220,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
               Descrição:
             </Text>
             <TextArea
-              p={'2'}
+              style={{padding: 2}}
               minHeight={90}
               placeholder="Digite aqui"
               value={toDoDescriptionValue}

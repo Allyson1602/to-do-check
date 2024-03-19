@@ -1,38 +1,38 @@
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/navigation";
-import { View } from "react-native";
-import { Box, Center, Spacer, VStack } from "native-base";
-import HeaderTitle from "../components/HeaderTitle";
-import Title from "../components/Title";
-import ToDoItem from "../components/ToDoItem";
-import { getCategoryImportant } from "../utils/get-category-important";
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../types/navigation';
+import {View} from 'react-native';
+import {Box, Center, Spacer, VStack} from 'native-base';
+import HeaderTitle from '../components/HeaderTitle';
+import Title from '../components/Title';
+import ToDoItem from '../components/ToDoItem';
+import {getCategoryImportant} from '../utils/get-category-important';
 
 type TImportantProps = {
-  navigation: StackNavigationProp<RootStackParamList, "Important">;
+  navigation: StackNavigationProp<RootStackParamList, 'Important'>;
 };
 
-const Important: React.FC<TImportantProps> = ({ navigation }) => {
+const Important: React.FC<TImportantProps> = ({navigation}) => {
   return (
     <View>
-      <Box safeArea px={"4"}>
+      <Box safeArea px={'4'}>
         <Center>
           <HeaderTitle text="Importantes" />
         </Center>
 
-        <VStack space={"6"} p={"4"} mt={"10"}>
-          {getCategoryImportant().map((categoryItem, index) => {
+        <VStack space={'6'} p={'4'} mt={'10'}>
+          {getCategoryImportant().map(categoryItem => {
             return (
-              <Box key={index}>
+              <Box key={categoryItem.id}>
                 <Title iconname={categoryItem.iconname}>
                   {categoryItem.title}
                 </Title>
-                <Spacer h={"1"} />
+                <Spacer h={'1'} />
 
-                <VStack space={"2"}>
-                  {categoryItem.todoitems?.map((todoItem, index) => {
+                <VStack space={'2'}>
+                  {categoryItem.todoitems?.map(todoItem => {
                     return (
                       todoItem.isimportant && (
-                        <ToDoItem key={index} todoItem={todoItem} />
+                        <ToDoItem key={todoItem.id} todoItem={todoItem} />
                       )
                     );
                   })}
