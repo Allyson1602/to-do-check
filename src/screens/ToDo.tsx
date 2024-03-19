@@ -220,7 +220,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
               Descrição:
             </Text>
             <TextArea
-              style={{padding: 2}}
+              p={'2'}
               minHeight={90}
               placeholder="Digite aqui"
               value={toDoDescriptionValue}

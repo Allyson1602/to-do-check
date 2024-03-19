@@ -197,9 +197,9 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
 
           <Box px={'3'} pb={'5'} display={isOpenAccordion ? 'block' : 'none'}>
             <TextArea
-              style={{padding: 2}}
+              p={'2'}
               minHeight={90}
-              placeholder="Digite aqui"
+              placeholder="Nenhuma descrição"
               bg={'#F7F2FF'}
               isReadOnly
               value={todoItem.description}
@@ -253,7 +253,7 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
               Descrição:
             </Text>
             <TextArea
-              style={{padding: 2}}
+              p={'2'}
               minHeight={90}
               placeholder="Digite aqui"
               value={toDoDescriptionValue}
