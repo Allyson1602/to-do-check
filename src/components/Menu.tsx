@@ -10,7 +10,7 @@ import {Image} from 'react-native';
 import List from 'phosphor-react-native/src/icons/List';
 import X from 'phosphor-react-native/src/icons/X';
 import House from 'phosphor-react-native/src/icons/House';
-import WarningCircle from 'phosphor-react-native/src/icons/WarningCircle';
+import Star from 'phosphor-react-native/src/icons/Star';
 import Title from './Title';
 import MenuItem from './MenuItem';
 import getIconByName from '../utils/get-icon-by-name';
@@ -105,7 +105,7 @@ export default function Menu() {
               </MenuItem>
 
               <MenuItem
-                Icon={WarningCircle}
+                Icon={Star}
                 id={'1000'}
                 goTo={EScreenName.IMPORTANT}
                 callBack={callBackClickMenuItem}>

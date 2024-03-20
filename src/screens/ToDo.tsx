@@ -7,10 +7,10 @@ import {
   IconButton,
   VStack,
   Text,
-  ScrollView,
   Input,
   TextArea,
   useToast,
+  View,
 } from 'native-base';
 import HeaderTitle from '../components/HeaderTitle';
 import Heart from 'phosphor-react-native/src/icons/Heart';
@@ -29,8 +29,14 @@ import Modal from '../components/Modal';
 import {useState} from 'react';
 import categoryService from '../services/category';
 import {ICategoryModel} from '../models/category';
-import {useAppDispatch} from '../hooks';
+import {useAppDispatch, useAppSelector} from '../hooks';
 import toDoService, {IToDoBody} from '../services/to-do';
+import {IToDoItemModel} from '../models/todo-item';
+import DraggableFlatList, {
+  DragEndParams,
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
+import {TouchableOpacity} from 'react-native';
 
 type TToDoProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ToDo'>;
@@ -47,6 +53,69 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
 
   const [toDoNameValue, setToDoNameValue] = useState('');
   const [toDoDescriptionValue, setToDoDescriptionValue] = useState('');
+
+  const getToDoItemByOrder = (): IToDoItemModel[] => {
+    const toDoOrder = [...category.todoitems];
+
+    toDoOrder.sort(
+      (ToDoItemX, ToDoItemY) => ToDoItemX.ordernumber - ToDoItemY.ordernumber,
+    );
+
+    return toDoOrder;
+  };
+
+  const handleDragEnd = ({
+    data: toDoUpdated,
+    to,
+  }: DragEndParams<IToDoItemModel>) => {
+    toDoUpdated = toDoUpdated.map((toDoUpdatedItem, index) => {
+      toDoUpdatedItem = {
+        ...toDoUpdatedItem,
+        ordernumber: index,
+      };
+
+      return toDoUpdatedItem;
+    });
+
+    let categoryUpdate = {...category, todoitems: toDoUpdated};
+
+    toDoUpdated.forEach(toDoUpdatedItem => {
+      toDoService.updateToDo(toDoUpdatedItem).then(response => {
+        if (response.status === 200) {
+          let categoryUpdate = category;
+
+          const toDoUpdated = categoryUpdate.todoitems.map(todoIt => {
+            if (todoIt.id === response.data.id) {
+              return response.data;
+            }
+            return todoIt;
+          });
+
+          categoryUpdate = {
+            ...categoryUpdate,
+            todoitems: toDoUpdated,
+          };
+        }
+      });
+    });
+
+    dispatch(updateCategory(categoryUpdate));
+  };
+
+  const renderItem = ({
+    item,
+    drag,
+    isActive,
+  }: RenderItemParams<IToDoItemModel>) => {
+    return (
+      <TouchableOpacity
+        onLongPress={drag}
+        disabled={isActive}
+        style={{paddingTop: 4, paddingBottom: 4}}>
+        <ToDoItem key={item.id} todoItem={item} />
+      </TouchableOpacity>
+    );
+  };
 
   if (category === undefined) {
     navigation.navigate(EScreenName.HOME);
@@ -107,6 +176,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
       categoryid: category.id,
       title: toDoNameValue,
       description: toDoDescriptionValue,
+      ordernumber: category.todoitems.length + 1,
     };
 
     const response = await toDoService.createToDo(toDoData);
@@ -129,7 +199,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
   };
 
   return (
-    <ScrollView>
+    <View>
       <Box safeArea px={'4'} h={'full'}>
         <Center>
           <HeaderTitle text="Afazeres" />
@@ -169,9 +239,12 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
               />
             </Button>
 
-            {category.todoitems?.map(todoItem => {
-              return <ToDoItem key={todoItem.id} todoItem={todoItem} />;
-            })}
+            <DraggableFlatList
+              data={getToDoItemByOrder()}
+              onDragEnd={handleDragEnd}
+              keyExtractor={item => item.id.toString()}
+              renderItem={renderItem}
+            />
           </VStack>
 
           <Button
@@ -249,7 +322,7 @@ const ToDo: React.FC<TToDoProps> = ({navigation, route}) => {
           Criar
         </Button>
       </Modal>
-    </ScrollView>
+    </View>
   );
 };
 

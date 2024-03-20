@@ -5,4 +5,5 @@ export interface IToDoItemModel {
   title: string;
   isimportant: boolean;
   isdone: boolean;
+  ordernumber: number;
 }

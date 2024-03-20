@@ -14,13 +14,14 @@ import {
 import React, {useState} from 'react';
 import DotsSixVertical from 'phosphor-react-native/src/icons/DotsSixVertical';
 import CaretDown from 'phosphor-react-native/src/icons/CaretDown';
+import Star from 'phosphor-react-native/src/icons/Star';
 import Check from 'phosphor-react-native/src/icons/Check';
-import {GestureResponderEvent, Pressable} from 'react-native';
 import {IToDoItemModel} from '../models/todo-item';
 import Modal from './Modal';
 import toDoService from '../services/to-do';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {updateCategory} from '../redux/reducers/category';
+import {CategoryState, updateCategory} from '../redux/reducers/category';
+import {getCategoryById} from '../utils/get-category-by-id';
 
 export interface IToDoItemProps {
   todoItem: IToDoItemModel;
@@ -30,9 +31,9 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
   const categories = useAppSelector(state => state.category);
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const category = getCategoryById(todoItem.categoryid) as CategoryState;
 
   const [isdone, setIsDone] = useState(todoItem.isdone);
-  const [isimportant, setIsImportant] = useState(todoItem.isimportant);
   const [toDoNameValue, setToDoNameValue] = useState(todoItem.title);
   const [toDoDescriptionValue, setToDoDescriptionValue] = useState(
     todoItem.description,
@@ -70,19 +71,13 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
     return false;
   };
 
-  const handleLongPress = async (event: GestureResponderEvent) => {
-    const importantToDo = !isimportant;
-
+  const handlePressIsImportant = async () => {
     const toDoItemData: IToDoItemModel = {
       ...todoItem,
-      isimportant: !isimportant,
+      isimportant: !todoItem.isimportant,
     };
 
-    const result = await updateToDo(toDoItemData);
-
-    if (result) {
-      setIsImportant(importantToDo);
-    }
+    updateToDo(toDoItemData);
   };
 
   const handleDeleteToDo = async () => {
@@ -161,35 +156,44 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
 
   return (
     <>
-      <Pressable onLongPress={handleLongPress}>
-        <Box bg={isimportant ? '#8A3FFC80' : '#8A3FFC40'} borderRadius={'xl'}>
-          <HStack
-            justifyContent={'space-between'}
-            alignItems={'center'}
-            py={'1'}>
-            <Pressable>
-              <DotsSixVertical weight="bold" color="#3B1F65" size={25} />
-            </Pressable>
+      <Box
+        bg={todoItem.isimportant ? '#8A3FFC80' : '#8A3FFC40'}
+        borderRadius={'xl'}>
+        <HStack justifyContent={'space-between'} alignItems={'center'} py={'1'}>
+          <DotsSixVertical weight="bold" color="#3B1F65" size={25} />
 
-            <HStack flexGrow={1} pl={'1'}>
-              <Checkbox
-                isChecked={isdone}
-                value="isdone"
-                borderColor={'#8A3FFC'}
-                bg="transparent"
-                _checked={{bg: '#8A3FFC'}}
-                _icon={{
-                  as: Check,
-                  color: '#3B1F65',
-                }}
-                onChange={handleToggleCheck}>
-                <Text
-                  color="#3B1F65"
-                  textDecorationLine={isdone ? 'line-through' : 'none'}>
-                  {todoItem.title}
-                </Text>
-              </Checkbox>
-            </HStack>
+          <HStack flexGrow={1} pl={'1'}>
+            <Checkbox
+              isChecked={isdone}
+              value="isdone"
+              borderColor={'#8A3FFC'}
+              bg="transparent"
+              _checked={{bg: '#8A3FFC'}}
+              _icon={{
+                as: Check,
+                color: '#3B1F65',
+              }}
+              onChange={handleToggleCheck}>
+              <Text
+                color="#3B1F65"
+                textDecorationLine={isdone ? 'line-through' : 'none'}>
+                {todoItem.title}
+              </Text>
+            </Checkbox>
+          </HStack>
+
+          <HStack>
+            <IconButton
+              onPress={handlePressIsImportant}
+              p={'2'}
+              icon={
+                <Star
+                  size={27}
+                  color="#8A3FFC"
+                  weight={todoItem.isimportant ? 'fill' : 'regular'}
+                />
+              }
+            />
 
             <IconButton
               onPress={() => setIsOpenAccordion(!isOpenAccordion)}
@@ -211,43 +215,43 @@ export default function ToDoItem({todoItem}: IToDoItemProps) {
               }
             />
           </HStack>
+        </HStack>
 
-          <Box px={'3'} pb={'5'} display={isOpenAccordion ? 'block' : 'none'}>
-            <TextArea
-              p={'2'}
-              minHeight={90}
-              placeholder="Nenhuma descrição"
-              bg={'#F7F2FF'}
-              isReadOnly
-              value={todoItem.description}
-              autoCompleteType={undefined} // bug
-            />
+        <Box px={'3'} pb={'5'} display={isOpenAccordion ? 'block' : 'none'}>
+          <TextArea
+            p={'2'}
+            minHeight={90}
+            placeholder="Nenhuma descrição"
+            bg={'#F7F2FF'}
+            isReadOnly
+            value={todoItem.description}
+            autoCompleteType={undefined} // bug
+          />
 
-            <HStack justifyContent={'space-between'} pt={'3'}>
-              <Button
-                borderColor={'#E41C1C'}
-                variant={'outline'}
-                _text={{
-                  fontWeight: 'normal',
-                  color: '#E41C1C',
-                }}
-                onPress={() => setDeleteToDoOpen(true)}>
-                apagar
-              </Button>
+          <HStack justifyContent={'space-between'} pt={'3'}>
+            <Button
+              borderColor={'#E41C1C'}
+              variant={'outline'}
+              _text={{
+                fontWeight: 'normal',
+                color: '#E41C1C',
+              }}
+              onPress={() => setDeleteToDoOpen(true)}>
+              apagar
+            </Button>
 
-              <Button
-                variant={'outline'}
-                px={'4'}
-                _text={{
-                  fontWeight: 'normal',
-                }}
-                onPress={() => setUpdateToDoOpen(true)}>
-                editar
-              </Button>
-            </HStack>
-          </Box>
+            <Button
+              variant={'outline'}
+              px={'4'}
+              _text={{
+                fontWeight: 'normal',
+              }}
+              onPress={() => setUpdateToDoOpen(true)}>
+              editar
+            </Button>
+          </HStack>
         </Box>
-      </Pressable>
+      </Box>
 
       <Modal
         title="Editar afazer"
